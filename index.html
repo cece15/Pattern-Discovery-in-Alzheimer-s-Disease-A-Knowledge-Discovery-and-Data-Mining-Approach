@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern Discovery in Alzheimer's Disease | Cynthia Mutua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:    #faf8f5;
+    --cream2:   #f2ede6;
+    --cream3:   #e8e0d6;
+    --lavender: #7c5cbf;
+    --lavender2:#9b7dd4;
+    --lavender-dim: rgba(124,92,191,0.1);
+    --lavender-soft: rgba(124,92,191,0.06);
+    --teal:     #2a9d8f;
+    --teal2:    #3db5a5;
+    --gold:     #c8932a;
+    --sage:     #4a7c59;
+    --rose:     #c0556a;
+    --ink:      #1e1a2e;
+    --ink2:     #2d2840;
+    --text:     #2c2535;
+    --text2:    #5a5068;
+    --text3:    #8a7f9a;
+    --white:    #ffffff;
+    --border:   rgba(44,37,53,0.08);
+    --shadow:   rgba(44,37,53,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(250,248,245,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 3rem;
+    height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: 'Lora', serif;
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--lavender); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .nav-brand::before { content: '←'; font-size: 0.85rem; }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text3); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--lavender); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 7rem 3rem 5rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 70% at 0% 60%, rgba(124,92,191,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 100% 10%, rgba(42,157,143,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 50% at 60% 100%, rgba(200,147,42,0.06) 0%, transparent 50%);
+  }
+
+  /* Soft neuron-like dots */
+  .hero-dots {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle 1px at 20% 30%, rgba(155,125,212,0.4) 0%, transparent 100%),
+      radial-gradient(circle 1px at 80% 20%, rgba(155,125,212,0.3) 0%, transparent 100%),
+      radial-gradient(circle 1px at 60% 70%, rgba(155,125,212,0.3) 0%, transparent 100%),
+      radial-gradient(circle 1.5px at 40% 80%, rgba(155,125,212,0.25) 0%, transparent 100%),
+      radial-gradient(circle 1px at 90% 60%, rgba(155,125,212,0.3) 0%, transparent 100%),
+      radial-gradient(circle 2px at 15% 65%, rgba(155,125,212,0.2) 0%, transparent 100%),
+      radial-gradient(circle 1px at 70% 40%, rgba(155,125,212,0.3) 0%, transparent 100%);
+    background-size:
+      400px 400px, 500px 300px, 350px 450px,
+      300px 350px, 450px 400px, 380px 320px, 420px 380px;
+    animation: driftDots 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes driftDots {
+    from { background-position: 0% 0%, 100% 0%, 50% 100%, 0% 80%, 100% 60%, 20% 50%, 70% 30%; }
+    to   { background-position: 5% 5%, 95% 5%, 55% 95%, 5% 75%, 95% 65%, 25% 45%, 65% 35%; }
+  }
+
+  .hero-eyebrow {
+    position: relative; z-index: 2;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; color: var(--lavender2);
+    letter-spacing: 0.16em; text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    opacity: 0; animation: reveal 0.9s ease forwards 0.3s;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--lavender2); }
+
+  .hero h1 {
+    position: relative; z-index: 2;
+    font-family: 'Lora', serif;
+    font-size: clamp(2.6rem, 5.5vw, 5rem);
+    font-weight: 400; line-height: 1.12;
+    color: var(--white); max-width: 820px;
+    opacity: 0; animation: reveal 0.9s ease forwards 0.5s;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--lavender2); }
+
+  .hero-lead {
+    position: relative; z-index: 2;
+    margin-top: 2rem;
+    font-family: 'Lora', serif;
+    font-size: 1.15rem; font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    max-width: 640px; line-height: 1.9;
+    font-style: italic;
+    opacity: 0; animation: reveal 0.9s ease forwards 0.7s;
+  }
+
+  .hero-stats {
+    position: relative; z-index: 2;
+    margin-top: 2.5rem;
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    opacity: 0; animation: reveal 0.9s ease forwards 0.85s;
+  }
+
+  .hero-stat { text-align: center; }
+  .hero-stat-val {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--lavender2); line-height: 1;
+  }
+  .hero-stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+
+  .hero-actions {
+    position: relative; z-index: 2;
+    margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: reveal 0.9s ease forwards 1s;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.9rem 2rem; border-radius: 5px;
+    font-size: 0.88rem; font-weight: 500;
+    text-decoration: none; transition: all 0.25s; border: none;
+  }
+
+  .btn-lavender { background: var(--lavender); color: #fff; }
+  .btn-lavender:hover { background: var(--lavender2); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,92,191,0.4); }
+
+  .btn-ghost { background: transparent; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.2); }
+  .btn-ghost:hover { border-color: var(--lavender2); color: var(--lavender2); transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(255,255,255,0.25); font-size: 0.68rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    animation: bounce 2.5s ease-in-out infinite 2s;
+  }
+
+  .scroll-bar { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent); }
+
+  /* ── NUMBERS ── */
+  .numbers {
+    background: var(--lavender);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 3.5rem 3rem;
+  }
+
+  .num-item { text-align: center; padding: 1.5rem; border-right: 1px solid rgba(255,255,255,0.15); }
+  .num-item:last-child { border-right: none; }
+  .num-val { font-family: 'Lora', serif; font-size: 2.8rem; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 0.4rem; }
+  .num-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.4; }
+  .num-sub { font-size: 0.7rem; color: rgba(255,255,255,0.45); margin-top: 0.25rem; font-style: italic; }
+
+  /* ── NARRATIVE SECTIONS ── */
+  .chapter {
+    max-width: 780px; margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .chapter-wide { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; }
+
+  .chapter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; color: var(--lavender);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .chapter-label::after { content: ''; flex: 1; max-width: 28px; height: 1px; background: var(--lavender); opacity: 0.4; }
+
+  h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 500; line-height: 1.25;
+    color: var(--ink); margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  h2 em { font-style: italic; color: var(--lavender); }
+
+  h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.25rem; font-weight: 600;
+    color: var(--ink2); margin: 2.5rem 0 0.75rem;
+  }
+
+  p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.02rem; color: var(--text2);
+    margin-bottom: 1.2rem; line-height: 1.88;
+    font-weight: 300;
+  }
+
+  p strong { color: var(--text); font-weight: 500; }
+
+  .dropcap::first-letter {
+    font-family: 'Lora', serif;
+    font-size: 4.2rem; font-weight: 700;
+    float: left; line-height: 0.8;
+    margin: 0.08em 0.1em 0 0;
+    color: var(--lavender);
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    margin: 3.5rem 0;
+    padding: 2.5rem 3rem;
+    background: var(--lavender-dim);
+    border-left: 3px solid var(--lavender);
+    border-radius: 0 10px 10px 0;
+  }
+
+  .pull-quote p {
+    font-family: 'Lora', serif;
+    font-size: 1.2rem; font-style: italic;
+    color: var(--ink); margin: 0; line-height: 1.75;
+  }
+
+  .pull-quote strong { color: var(--lavender); font-style: normal; }
+
+  /* ── VISUALIZATION CARDS ── */
+  .viz-bg { background: var(--cream2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .viz-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px var(--shadow);
+    transition: all 0.3s;
+    margin-bottom: 1.5rem;
+  }
+
+  .viz-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(44,37,53,0.15);
+  }
+
+  .viz-label {
+    padding: 0.75rem 1.5rem;
+    background: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; color: var(--lavender2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .viz-img {
+    width: 100%; display: block;
+    object-fit: contain;
+    background: #f8f8fa;
+  }
+
+  .viz-caption {
+    padding: 1.2rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .viz-caption-title {
+    font-family: 'Lora', serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 0.3rem;
+  }
+
+  .viz-caption p {
+    font-size: 0.88rem; color: var(--text3);
+    line-height: 1.6; margin: 0;
+    font-weight: 400;
+  }
+
+  .viz-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+  /* ── FINDING CARDS ── */
+  .findings-dark { background: var(--ink); padding: 6rem 3rem; }
+  .findings-inner { max-width: 1100px; margin: 0 auto; }
+  .findings-dark h2 { color: var(--white); }
+  .findings-dark p { color: rgba(255,255,255,0.6); }
+  .findings-dark .chapter-label { color: var(--lavender2); }
+  .findings-dark .chapter-label::after { background: var(--lavender2); }
+
+  .findings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+
+  .finding {
+    padding: 2rem; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+
+  .finding::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+  }
+
+  .finding:hover { background: rgba(255,255,255,0.07); border-color: rgba(155,125,212,0.3); transform: translateY(-3px); }
+  .finding:hover::before { transform: scaleX(1); }
+
+  .f-lavender::before { background: var(--lavender2); }
+  .f-teal::before { background: var(--teal2); }
+  .f-gold::before { background: var(--gold); }
+  .f-sage::before { background: var(--sage); }
+  .f-rose::before { background: var(--rose); }
+
+  .finding-val {
+    font-family: 'Lora', serif;
+    font-size: 2rem; font-weight: 700;
+    line-height: 1; margin-bottom: 0.6rem;
+  }
+
+  .finding-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .finding-desc { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; margin: 0; font-weight: 300; }
+
+  /* ── METHODS TABLE ── */
+  .methods-wrap { background: var(--cream2); padding: 5rem 3rem; }
+  .methods-inner { max-width: 900px; margin: 0 auto; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.9rem; background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 24px var(--shadow); }
+  thead { background: var(--ink2); }
+  th { padding: 1rem 1.5rem; text-align: left; font-family: 'DM Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--cream2); color: var(--text2); font-size: 0.88rem; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--cream); }
+  .td-bold { font-weight: 600; color: var(--text); }
+
+  .badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+  .badge-good { background: rgba(74,124,89,0.15); color: var(--sage); }
+  .badge-info { background: var(--lavender-dim); color: var(--lavender); }
+  .badge-warn { background: rgba(200,147,42,0.12); color: var(--gold); }
+
+  /* ── IMPACT ── */
+  .impact { padding: 6rem 3rem; max-width: 900px; margin: 0 auto; }
+
+  /* ── STACK ── */
+  .stack-section { background: var(--cream2); padding: 4rem 3rem; border-top: 1px solid var(--border); }
+  .stack-inner { max-width: 900px; margin: 0 auto; }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+  .tag { padding: 0.35rem 0.85rem; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 0.72rem; background: var(--white); color: var(--text3); border: 1px solid var(--border); transition: all 0.2s; }
+  .tag:hover { background: var(--lavender); color: #fff; border-color: var(--lavender); }
+
+  /* ── CONCLUSION ── */
+  .conclusion { background: var(--ink); padding: 7rem 3rem; text-align: center; }
+  .conclusion h2 { color: var(--white); font-size: clamp(2rem, 4vw, 3.2rem); max-width: 700px; margin: 0 auto 1.5rem; }
+  .conclusion h2 em { color: var(--lavender2); }
+  .conclusion p { color: rgba(255,255,255,0.6); max-width: 580px; margin: 0 auto 1.5rem; }
+
+  /* ── FOOTER ── */
+  footer { padding: 2.5rem 3rem; background: #0f0c1a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-name { font-family: 'Lora', serif; font-size: 0.95rem; color: var(--white); }
+  .footer-name span { color: var(--lavender2); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--lavender2); }
+  .footer-credit { width: 100%; text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.2); padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 0.5rem; }
+
+  /* ── DIVIDER ── */
+  .divider { text-align: center; color: var(--cream3); margin: 2.5rem 0; letter-spacing: 0.3em; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
+
+  .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 6rem 1.5rem 4rem; }
+    .numbers { grid-template-columns: repeat(2, 1fr); padding: 2.5rem 1.5rem; }
+    .chapter, .chapter-wide { padding: 4rem 1.5rem; }
+    .viz-two { grid-template-columns: 1fr; }
+    .findings-grid { grid-template-columns: 1fr; }
+    .findings-dark { padding: 4rem 1.5rem; }
+    .methods-wrap, .stack-section { padding: 4rem 1.5rem; }
+    .conclusion, footer { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://cece15.github.io" class="nav-brand">Cynthia Mutua</a>
+  <ul class="nav-links">
+    <li><a href="#story">The Story</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#methods">Methods</a></li>
+    <li><a href="#visuals">Visualizations</a></li>
+    <li><a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-eyebrow">Knowledge Discovery · Clinical Data Mining · 2,149 Patients</div>
+  <h1>What can data reveal<br>about <em>Alzheimer's disease</em><br>that clinicians might miss?</h1>
+  <p class="hero-lead">"Early detection is our most powerful intervention — yet many patients go undiagnosed until it's too late. This study set out to discover hidden patterns in routine clinical data that could improve screening."</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">93.8%</div><div class="hero-stat-label">Model Accuracy</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">39</div><div class="hero-stat-label">Rules Discovered</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">2,149</div><div class="hero-stat-label">Patients</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">35</div><div class="hero-stat-label">Clinical Features</div></div>
+  </div>
+  <div class="hero-actions">
+    <a href="#story" class="btn btn-lavender">Read the Story ↓</a>
+    <a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach" target="_blank" class="btn btn-ghost">View Code on GitHub ↗</a>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-bar"></div></div>
+</div>
+
+<!-- NUMBERS -->
+<div class="numbers">
+  <div class="num-item fade-up"><div class="num-val">2,149</div><div class="num-label">Patients Analyzed</div><div class="num-sub">35 clinical & lifestyle features</div></div>
+  <div class="num-item fade-up"><div class="num-val">93.8%</div><div class="num-label">Classification Accuracy</div><div class="num-sub">91% sensitivity · 95% specificity</div></div>
+  <div class="num-item fade-up"><div class="num-val">39</div><div class="num-label">Association Rules</div><div class="num-sub">confidence up to 84%</div></div>
+  <div class="num-item fade-up"><div class="num-val">5</div><div class="num-label">Analytical Methods</div><div class="num-sub">EDA · clustering · rules · trees</div></div>
+</div>
+
+<!-- CHAPTER 1: THE PROBLEM -->
+<div id="story">
+  <div class="chapter">
+    <div class="chapter-label">Chapter One</div>
+    <h2>Why this matters — and who it affects</h2>
+
+    <p class="dropcap">Alzheimer's Disease affects over 50 million people worldwide. It is the most common cause of dementia — and one of medicine's most heartbreaking challenges. By the time most patients are diagnosed, the disease has already progressed significantly. Families have noticed the memory slips. The forgotten appointments. The personality changes. But the clinical diagnosis comes late, and the window for early intervention narrows.</p>
+
+    <p>The question this study asked is deceptively simple: <strong>can routine clinical data — the kind collected at any standard doctor's visit — reveal patterns that help us detect Alzheimer's earlier?</strong></p>
+
+    <p>We applied a full knowledge discovery pipeline to a dataset of <strong>2,149 patients</strong> spanning demographics, lifestyle, cardiovascular health, cognitive tests, and behavioral assessments. Our approach was systematic: explore, cluster, mine for rules, classify, and — critically — check whether the same features emerge as important across multiple independent methods.</p>
+
+    <div class="pull-quote fade-up">
+      <p>The goal was not just prediction accuracy. It was <strong>interpretability</strong> — building models that a clinician can understand, audit, and trust in practice.</p>
+    </div>
+  </div>
+
+  <!-- VISUALIZATIONS: EDA -->
+  <div class="viz-bg" id="visuals">
+    <div class="chapter-wide">
+      <div class="chapter-label">The Patients</div>
+      <h2>Who is in this dataset?</h2>
+      <p>Before any modeling, we needed to understand the data: who these patients are, how diagnoses are distributed, and which features show the strongest relationships with Alzheimer's.</p>
+
+      <div class="viz-two">
+        <div class="viz-card fade-up">
+          <div class="viz-label">📊 Figure 1 · Diagnosis Distribution</div>
+          <img src="figures/diagnosis_distribution.png" alt="Diagnosis distribution pie chart" class="viz-img" style="max-height:320px; padding:1.5rem;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">35.4% of patients have Alzheimer's</div>
+            <p>The dataset has a 1.83:1 class imbalance — more patients without AD than with. This reflects clinical reality and motivated stratified sampling and class-weighted models throughout the analysis.</p>
+          </div>
+        </div>
+        <div class="viz-card fade-up">
+          <div class="viz-label">📊 Figure 2 · Age Distribution by Diagnosis</div>
+          <img src="figures/age_distribution_analysis.png" alt="Age distribution analysis" class="viz-img" style="max-height:320px; object-fit:cover; object-position:center;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">Age overlaps substantially — it's not the whole story</div>
+            <p>Both diagnosed and non-diagnosed patients span the full 60–90 age range with similar distributions. This tells us that <strong>age alone cannot diagnose Alzheimer's</strong> — and motivates the multivariate approach that follows.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="viz-card fade-up">
+        <div class="viz-label">🔥 Figure 3 · Full Correlation Matrix — Top 10 Features Correlated with Diagnosis</div>
+        <img src="figures/correlation_heatmap.png" alt="Correlation heatmap" class="viz-img" style="max-height:420px; object-fit:cover;">
+        <div class="viz-caption">
+          <div class="viz-caption-title">Functional decline matters more than cognitive tests alone</div>
+          <p>The top predictors are <strong>FunctionalAssessment (r=−0.36)</strong> and <strong>ADL (r=−0.33)</strong> — measures of daily living ability — which outrank even MMSE (r=−0.24). Perhaps most importantly, subjective <strong>MemoryComplaints (r=+0.31)</strong> ranks third, validating the clinical wisdom of listening to patients and caregivers. No single feature achieves r>0.36 — no single test is enough.</p>
+        </div>
+      </div>
+
+      <div class="viz-two">
+        <div class="viz-card fade-up">
+          <div class="viz-label">🫀 Figure 4 · Clinical Measurements</div>
+          <img src="figures/clinical_measurements.png" alt="Clinical measurements violin plots" class="viz-img" style="max-height:340px; object-fit:cover; object-position:top;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">Blood pressure & cholesterol are surprisingly weak predictors</div>
+            <p>Cardiovascular markers show near-identical distributions between diagnosed and non-diagnosed patients. This is a meaningful finding: for Alzheimer's specifically (vs vascular dementia), functional and behavioral measures are far more discriminative than cardiovascular risk factors.</p>
+          </div>
+        </div>
+        <div class="viz-card fade-up">
+          <div class="viz-label">🌿 Figure 5 · Lifestyle Factors</div>
+          <img src="figures/lifestyle_factors_analysis.png" alt="Lifestyle factors analysis" class="viz-img" style="max-height:340px; object-fit:cover; object-position:top;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">Lifestyle shows weaker direct associations</div>
+            <p>Smoking, alcohol, diet, and physical activity show minimal differences between groups in this cross-sectional data. Lifestyle factors likely act over decades rather than showing strong single-point effects — but this doesn't diminish their preventive importance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 2: CLUSTERING -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Two</div>
+    <h2>Do discrete patient <em>subtypes</em> exist?</h2>
+
+    <p>Medical literature suggests Alzheimer's may present differently across patients — memory-predominant, executive function-predominant, language-predominant forms. If distinct patient subtypes exist in this data, unsupervised clustering should reveal them.</p>
+
+    <p>We tested k-means clustering for k=2 through 7, validating each solution with four independent metrics: silhouette score, Davies-Bouldin index, Calinski-Harabasz score, and inertia. We then validated with hierarchical clustering using Ward linkage.</p>
+  </div>
+
+  <div class="viz-bg">
+    <div class="chapter-wide">
+      <div class="viz-card fade-up">
+        <div class="viz-label">📉 Figure 6 · Elbow Method + Clustering Validation Metrics (k=2–7)</div>
+        <img src="figures/ELBOW_METHOD_ANALYSIS.png" alt="Elbow method clustering analysis" class="viz-img" style="max-height:420px; object-fit:cover; object-position:top;">
+        <div class="viz-caption">
+          <div class="viz-caption-title">All four metrics tell the same story: no clear clusters</div>
+          <p>Silhouette scores of 0.051–0.059 across all k values — far below the 0.3 threshold for meaningful separation. No "elbow" appears in the inertia curve. The Davies-Bouldin index remains high. All metrics converge on the same conclusion: discrete patient subtypes do not exist in this data.</p>
+        </div>
+      </div>
+
+      <div class="viz-two">
+        <div class="viz-card fade-up">
+          <div class="viz-label">🔵 Figure 7 · PCA Visualization of Clustering Results</div>
+          <img src="figures/PCA_Visualizations.png" alt="PCA visualization" class="viz-img" style="max-height:300px; object-fit:cover;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">Patients blend together — no separable regions</div>
+            <p>In 2D PCA projection, even true diagnosis labels (right panel) show complete mixing. There is no region of space that "belongs" to Alzheimer's patients — the disease varies continuously across multiple dimensions simultaneously.</p>
+          </div>
+        </div>
+        <div class="viz-card fade-up">
+          <div class="viz-label">🔵 Figure 8 · K-Means vs Hierarchical Clustering</div>
+          <img src="figures/k-means_vs_heirachichal.png" alt="K-means vs hierarchical clustering comparison" class="viz-img" style="max-height:300px; object-fit:cover;">
+          <div class="viz-caption">
+            <div class="viz-caption-title">Two algorithms disagree entirely (ARI = 0.025)</div>
+            <p>If real clusters existed, both algorithms would find similar groupings. An Adjusted Rand Index of 0.025 — near zero — means k-means and hierarchical clustering assign patients almost randomly differently. The clusters are algorithmic artifacts, not real structure.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote fade-up" style="background: var(--white); border-left-color: var(--teal);">
+        <p>We reframe this as a <strong>meaningful scientific finding</strong>, not a failure: Alzheimer's severity in this population lies on a <strong>continuum</strong> rather than forming discrete patient subtypes. This aligns with the NIA-AA Research Framework and current biological understanding of dementia progression. No clustering method will find what doesn't exist — and recognizing that takes rigour.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 3: ASSOCIATION RULES -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Three</div>
+    <h2>Which <em>combinations</em> of symptoms predict a diagnosis?</h2>
+
+    <p>Since clustering revealed no discrete groups, we pivoted to a different question: not "what type of patient is this?" but "when these specific symptoms co-occur, how predictive is that combination?" Association rule mining answers exactly this.</p>
+
+    <p>Using the Apriori algorithm on discretized clinical features, we discovered <strong>39 interpretable IF-THEN rules</strong> predicting Alzheimer's diagnosis, each with at least 60% confidence and lift ≥ 1.5.</p>
+
+    <p>The strongest rule: <strong>IF MemoryComplaints = 1 AND MMSE_Category = Severe Impairment → AD diagnosis</strong> with 84% confidence and 2.36× lift. Patients with this combination are 2.36 times more likely to have Alzheimer's than the average patient in the dataset.</p>
+  </div>
+
+  <div class="viz-bg">
+    <div class="chapter-wide">
+      <div class="viz-card fade-up">
+        <div class="viz-label">📊 Figure 9 · Most Common Antecedent Items in AD Diagnosis Rules</div>
+        <img src="figures/Association_rule_mining.png" alt="Association rule mining antecedents" class="viz-img" style="max-height:380px; object-fit:contain; background:#fff; padding:1.5rem;">
+        <div class="viz-caption">
+          <div class="viz-caption-title">MemoryComplaints dominates — appearing in 51% of all rules</div>
+          <p>This chart shows how often each feature appears in the 39 high-confidence rules. MemoryComplaints is overwhelmingly the most common antecedent — validating that patient and caregiver-reported memory concerns are not "soft" data but among the <strong>strongest clinical signals available</strong>. MMSE impairment and BehavioralProblems follow. Notably, the top 3 features are all behavioral or subjective — not blood tests, not imaging.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 4: DECISION TREE -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Four</div>
+    <h2>Can a machine learning model <em>match</em> clinical judgment?</h2>
+
+    <p>Association rules provide local, specific patterns. But for a complete diagnostic tool, we need a model that covers every patient — not just those matching a specific symptom combination. Decision trees offer exactly this: a single, unified model that is also fully transparent.</p>
+
+    <p>We ran a grid search across 12 hyperparameter configurations. The best model — maximum depth of 5, minimum 10 samples per leaf — achieved <strong>93.8% accuracy, 0.912 F1-score, 91% sensitivity, and 95% specificity</strong>. It correctly identified 91% of all Alzheimer's cases in the test set.</p>
+
+    <p>For comparison: always predicting "no Alzheimer's" achieves 64.7% accuracy. Logistic regression achieves 81.6%. Our decision tree at 93.8% does this while remaining <strong>fully interpretable</strong> — clinicians can follow the exact reasoning path for any patient.</p>
+  </div>
+
+  <div class="viz-bg">
+    <div class="chapter-wide">
+      <div class="viz-card fade-up">
+        <div class="viz-label">🌳 Figure 10 · Top 10 Features from the Decision Tree</div>
+        <img src="figures/top_10_features_from_decision_tree.png" alt="Decision tree feature importance" class="viz-img" style="max-height:380px; object-fit:contain; background:#fff; padding:1.5rem;">
+        <div class="viz-caption">
+          <div class="viz-caption-title">Five features drive 98.4% of the model's predictive power</div>
+          <p><strong>FunctionalAssessment (23.3%)</strong> is the single most important feature — more than MMSE. Together with ADL (18.4%) and MMSE (21.2%), these three functional and cognitive measures account for 62.9% of all predictive information. Orange bars show features that also appear prominently in association rules — providing <strong>convergent evidence</strong> from two completely independent methods that MemoryComplaints and BehavioralProblems are clinically central.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINDINGS -->
+<div class="findings-dark" id="findings">
+  <div class="findings-inner">
+    <div class="chapter-label">The Findings</div>
+    <h2>Six things this analysis revealed about Alzheimer's</h2>
+    <p>Each finding has direct implications for how clinicians screen, diagnose, and prioritize patients.</p>
+
+    <div class="findings-grid">
+      <div class="finding f-lavender fade-up">
+        <div class="finding-val" style="color:var(--lavender2);">93.8%</div>
+        <div class="finding-title">Interpretable Models Work</div>
+        <div class="finding-desc">A transparent decision tree outperforms logistic regression by 12 percentage points — proving that black-box models are not required for excellent clinical prediction.</div>
+      </div>
+      <div class="finding f-teal fade-up">
+        <div class="finding-val" style="color:var(--teal2);">Continuum</div>
+        <div class="finding-title">AD Has No Discrete Subtypes</div>
+        <div class="finding-desc">All clustering metrics (silhouette ≈ 0.06, ARI = 0.025) confirm that Alzheimer's severity varies continuously in this population — consistent with current biological frameworks.</div>
+      </div>
+      <div class="finding f-gold fade-up">
+        <div class="finding-val" style="color:var(--gold);">84%</div>
+        <div class="finding-title">Best Rule Confidence</div>
+        <div class="finding-desc">When a patient reports memory complaints AND has severe MMSE impairment, there is 84% confidence they have Alzheimer's — a clinically actionable screening guideline.</div>
+      </div>
+      <div class="finding f-sage fade-up">
+        <div class="finding-val" style="color:#6db888;">Functional</div>
+        <div class="finding-title">Function Outranks Cognition</div>
+        <div class="finding-desc">FunctionalAssessment (23.3% importance) consistently outperforms MMSE (21.2%) across all methods. Assessing daily living ability may be a more sensitive early indicator than cognitive testing alone.</div>
+      </div>
+      <div class="finding f-lavender fade-up">
+        <div class="finding-val" style="color:var(--lavender2);">51%</div>
+        <div class="finding-title">Subjective Reports Matter</div>
+        <div class="finding-desc">MemoryComplaints appears in 51% of all 39 high-confidence rules. Patient and caregiver-reported concerns are not soft anecdotes — they are among the strongest clinical signals available.</div>
+      </div>
+      <div class="finding f-rose fade-up">
+        <div class="finding-val" style="color:#d98090;">2</div>
+        <div class="finding-title">Convergent Features Validated</div>
+        <div class="finding-desc">MemoryComplaints and BehavioralProblems appear as important in correlation analysis, association rules, AND decision tree splits — three independent methods providing convergent evidence of their clinical centrality.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- METHODS TABLE -->
+<div class="methods-wrap" id="methods">
+  <div class="methods-inner">
+    <div class="chapter-label">The Methods</div>
+    <h2>How every number in this study was produced</h2>
+    <p>Every finding is backed by a specific, replicable method. The pipeline moves systematically from exploration to prediction, with each stage building on insights from the last.</p>
+
+    <table class="fade-up">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Question it answered</th>
+          <th>Key result</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-bold">Exploratory Data Analysis</td>
+          <td>Which features relate most strongly to diagnosis?</td>
+          <td>FunctionalAssessment r=−0.36 · no single perfect predictor</td>
+          <td><span class="badge badge-good">Foundation ✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-bold">K-Means Clustering (k=2–7)</td>
+          <td>Do discrete patient subtypes exist?</td>
+          <td>Silhouette = 0.051–0.059 · no clear elbow</td>
+          <td><span class="badge badge-info">Scientific Finding</span></td>
+        </tr>
+        <tr>
+          <td class="td-bold">Hierarchical Clustering</td>
+          <td>Does a different algorithm find stable clusters?</td>
+          <td>ARI = 0.025 vs k-means</td>
+          <td><span class="badge badge-info">Confirms Continuum</span></td>
+        </tr>
+        <tr>
+          <td class="td-bold">Association Rules (Apriori)</td>
+          <td>Which symptom combinations predict diagnosis?</td>
+          <td>39 rules · confidence 60–84% · lift up to 2.36</td>
+          <td><span class="badge badge-good">Actionable ✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-bold">Decision Tree (depth=5)</td>
+          <td>Can we build an interpretable classifier?</td>
+          <td>93.8% accuracy · 0.912 F1 · 91% sensitivity</td>
+          <td><span class="badge badge-good">Excellent ✓</span></td>
+        </tr>
+        <tr>
+          <td class="td-bold">Cross-Method Integration</td>
+          <td>Do findings replicate across independent methods?</td>
+          <td>MemoryComplaints & BehavioralProblems — both convergent</td>
+          <td><span class="badge badge-good">Validated ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<div class="stack-section">
+  <div class="stack-inner fade-up">
+    <div class="chapter-label">Built With</div>
+    <h2 style="font-size:1.6rem; margin-bottom:0.5rem;">Tools & Technologies</h2>
+    <div class="stack-tags">
+      <span class="tag">Python 3.10</span>
+      <span class="tag">scikit-learn 1.3</span>
+      <span class="tag">mlxtend 0.22</span>
+      <span class="tag">pandas 2.1</span>
+      <span class="tag">NumPy 1.24</span>
+      <span class="tag">matplotlib 3.7</span>
+      <span class="tag">seaborn 0.12</span>
+      <span class="tag">Google Colab</span>
+      <span class="tag">GitHub</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONCLUSION -->
+<div class="conclusion">
+  <h2>Transparent models can achieve <em>excellent</em> clinical performance.</h2>
+  <p>93.8% accuracy. 91% sensitivity. 95% specificity. All from a decision tree that a clinician can read, audit, and trust — no black box required.</p>
+  <p>The findings point toward a shift in Alzheimer's screening: prioritize functional assessment alongside cognitive testing, take subjective complaints seriously, and look for the combination of behavioral and cognitive signals that appear across every method in this study.</p>
+  <p style="color:rgba(255,255,255,0.35); font-size:0.85rem;">Primary contributor: Cynthia Mutua · Co-authors: Halee Belghouthi, Fedi Naimi, Jhansi Nalla · CIS 635 · GVSU 2025</p>
+  <div style="margin-top:2.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach" target="_blank" class="btn btn-lavender">View Full Code on GitHub ↗</a>
+    <a href="https://cece15.github.io" class="btn btn-ghost">← Back to Portfolio</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-name">Cynthia Mutua <span>//</span> Primary Contributor</div>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/cynthia-mutua" target="_blank">LinkedIn</a>
+    <a href="https://github.com/cece15" target="_blank">GitHub</a>
+    <a href="https://cece15.github.io" target="_blank">Portfolio</a>
+  </div>
+  <div class="footer-credit">Grand Valley State University · CIS 635: Knowledge Discovery and Data Mining · 2025</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.findings-grid .finding, .numbers .num-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.08}s`;
+  });
+</script>
+</body>
+</html>
