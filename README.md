@@ -264,7 +264,7 @@ pip install -r requirements.txt
 
 ### Run in Google Colab
 Open the notebook directly:
-👉 [ALZHEIMER'S DISEASE PATTERN DISCOVERY.ipynb](https://colab.research.google.com/drive/1Q83Mx_Dgv_biAxytV0Q9fcuJ7QvXdlj6?usp=sharing)
+[DATA MINING.ipynb](https://colab.research.google.com/github/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach/blob/main/Data_Mining_Project.ipynb)
 
 ---
 
