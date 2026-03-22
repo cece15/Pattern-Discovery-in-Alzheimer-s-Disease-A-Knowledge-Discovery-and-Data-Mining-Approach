@@ -294,7 +294,7 @@ Open the notebook directly:
 
 ## Team & Contributions
 
-**Cynthia Mutua** *(Primary contributor)*
+**Cynthia Mutua** 
 K-means clustering implementation, all 4 clustering validation metrics
 (silhouette, Davies-Bouldin, Calinski-Harabasz, inertia), cluster profiling,
 PCA visualization, exploratory data analysis, association rule mining,
