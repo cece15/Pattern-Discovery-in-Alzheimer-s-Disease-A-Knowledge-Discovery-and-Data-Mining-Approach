@@ -9,6 +9,11 @@
 ![Rules](https://img.shields.io/badge/Association%20Rules-39-orange?style=flat)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)
 
+## Live Project Page
+
+> **[View Interactive Project Page](https://cece15.github.io/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach)**
+> A narrative walkthrough of the full KDD pipeline — accessible to all audiences, with all 10 visualizations embedded
+
 Alzheimer’s Disease is a progressive neurodegenerative disorder affecting millions worldwide. Early detection is vital, yet many cases go undiagnosed until symptoms worsen. This study applies a data‑mining pipeline to patient data with 35 clinical and lifestyle features to identify patterns linked to AD.
 
 This is a comprehensive **knowledge discovery and data mining (KDD) pipeline** applied to a real-world
