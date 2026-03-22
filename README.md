@@ -10,18 +10,20 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)
 
 Alzheimer’s Disease is a progressive neurodegenerative disorder affecting millions worldwide. Early detection is vital, yet many cases go undiagnosed until symptoms worsen. This study applies a data‑mining pipeline to patient data with 35 clinical and lifestyle features to identify patterns linked to AD.
-A comprehensive **knowledge discovery and data mining (KDD) pipeline** applied to a real-world
+
+This is a comprehensive **knowledge discovery and data mining (KDD) pipeline** applied to a real-world
 Alzheimer's Disease dataset of **2,149 patients and 35 clinical features** — comparing unsupervised
 and supervised learning methods to discover clinically actionable patterns for early AD detection.
 
 > **Team:** Cynthia Mutua · Halee Belghouthi · Fedi Naimi · Jhansi Nalla
 > **Course:** CIS 635 — Knowledge Discovery and Data Mining, Grand Valley State University
+> 
 > **Cynthia's contributions:** K-means implementation, 4 clustering validation metrics, cluster
 > profiling, PCA visualization (42 commits)
 
 ---
 
-## 🔑 Key Findings
+## Key Findings
 
 | Finding | Result |
 |---|---|
@@ -34,7 +36,7 @@ and supervised learning methods to discover clinically actionable patterns for e
 
 ---
 
-## 🏗️ Analytical Pipeline
+## Analytical Pipeline
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -79,7 +81,7 @@ and supervised learning methods to discover clinically actionable patterns for e
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Pattern-Discovery-in-Alzheimer-s-Disease/
@@ -95,7 +97,7 @@ Pattern-Discovery-in-Alzheimer-s-Disease/
 
 ---
 
-## 🗄️ Dataset
+## Dataset
 
 **Source:** [Alzheimer's Disease Dataset — El Kharoua (2024), Kaggle](https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset)
 
@@ -112,7 +114,7 @@ Medical History · Cognitive (MMSE) · Functional (ADL) · Behavioral/Symptomati
 
 ---
 
-## 📊 Results
+## Results
 
 ### 1. Exploratory Data Analysis
 
@@ -233,7 +235,7 @@ and top decision tree features — providing **convergent evidence** from indepe
 
 ---
 
-## 💡 Clinical Implications
+## Clinical Implications
 
 1. **Functional assessment > cognitive testing alone** — FunctionalAssessment (23.3% importance)
 outranks MMSE (21.2%) as a predictor, suggesting daily living ability is a more sensitive indicator
@@ -246,7 +248,7 @@ r > 0.36; combining functional, cognitive, and behavioral measures is essential
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ### Prerequisites
 ```bash
@@ -262,11 +264,11 @@ pip install -r requirements.txt
 
 ### Run in Google Colab
 Open the notebook directly:
-👉 [KDD_FINAL_GROUP_PROJECT.ipynb](https://github.com/GVSU-CIS635/projects-halved/blob/main/KDD_FINAL_GROUP_PROJECT.ipynb)
+👉 [ALZHEIMER'S DISEASE PATTERN DISCOVERY.ipynb](https://colab.research.google.com/drive/1Q83Mx_Dgv_biAxytV0Q9fcuJ7QvXdlj6?usp=sharing)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -280,7 +282,7 @@ Open the notebook directly:
 
 ---
 
-## 📚 References
+## References
 
 1. El Kharoua, R. (2024). Alzheimer's Disease Dataset. Kaggle.
 2. Jack, C.R., et al. (2018). NIA-AA Research Framework. *Alzheimer's & Dementia*, 14(4), 535–562.
@@ -290,7 +292,7 @@ Open the notebook directly:
 
 ---
 
-## 👩🏽‍💻 Team & Contributions
+## Team & Contributions
 
 **Cynthia Mutua** *(Primary contributor)*
 K-means clustering implementation, all 4 clustering validation metrics
