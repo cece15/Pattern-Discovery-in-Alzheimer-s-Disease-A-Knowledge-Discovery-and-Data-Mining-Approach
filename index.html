@@ -4,158 +4,173 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pattern Discovery in Alzheimer's Disease · Cynthia Mutua</title>
-<meta name="description" content="A full knowledge-discovery pipeline on 2,149 patients: interpretable models reaching 93.8% accuracy, and a clustering result reframed as a finding about disease continuity. By Cynthia Mutua." />
+<meta name="description" content="A full knowledge-discovery pipeline on 2,149 patients: interpretable models at 93.8% accuracy, and a clustering result reframed as a finding about disease continuity. By Cynthia Mutua." />
 <script>document.documentElement.className="js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   @font-face{font-family:"Mona Sans";src:url("./fonts/MonaSans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
   @font-face{font-family:"Mona Sans";src:url("./fonts/MonaSans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
   @font-face{font-family:"Mona Sans";src:url("./fonts/MonaSans-SemiBold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
   :root{
-    --ivory:#FFF8F0; --card:#FFFDFA; --ink:#2B2230; --mute:rgba(43,34,48,.62);
-    --flame:#FF5A45; --flame-d:#E23B26; --lilac:#A98BE0; --lilac-d:#7E5FC0; --lilac-soft:#EBE1FB;
-    --gold:#FFC23C; --gold-d:#D99400; --teal:#16B79A; --teal-d:#0A8475; --line:rgba(43,34,48,.12);
-    --display:"Bricolage Grotesque",Georgia,serif; --elegant:"Fraunces",Georgia,serif;
+    --ivory:#FCF6EC; --paper:#FFFDFA; --ink:#221C26; --slate:#6F6873; --mute:rgba(34,28,38,.58);
+    --flame:#FF5A45; --flame-d:#D8412C; --teal:#0F8C79; --taupe:#CBC1B4; --line:rgba(34,28,38,.11); --line2:rgba(34,28,38,.06);
+    --display:"Bricolage Grotesque",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
     --sans:"Mona Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);line-height:1.6;
-    font-size:clamp(16px,1.05vw,17px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.4rem,5vw,3.5rem)}
+  body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);line-height:1.62;
+    font-size:clamp(15.5px,1.02vw,16.5px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.4rem,5vw,3rem)}
   a{color:inherit;text-decoration:none}
-  a:focus-visible{outline:2.5px solid var(--lilac-d);outline-offset:3px;border-radius:4px}
-  ::selection{background:var(--gold);color:var(--ink)}
-  h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em}
+  a:focus-visible{outline:2.5px solid var(--flame);outline-offset:3px;border-radius:4px}
+  ::selection{background:var(--flame);color:#fff}
+  h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.018em}
+  .mono{font-family:var(--mono)}
 
-  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,248,240,.85);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line)}
-  .topbar-in{display:flex;align-items:center;justify-content:space-between;padding:.95rem 0;gap:1rem;flex-wrap:wrap}
-  .back{font-weight:600;font-size:.88rem;display:inline-flex;align-items:center;gap:.5em;color:var(--ink)}
+  /* topbar */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(252,246,236,.9);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line)}
+  .topbar-in{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0;gap:1rem;flex-wrap:wrap}
+  .back{font-family:var(--mono);font-weight:500;font-size:.8rem;display:inline-flex;align-items:center;gap:.5em;color:var(--ink)}
   .back .a{color:var(--flame);transition:transform .15s ease;display:inline-block}
   .back:hover .a{transform:translateX(-3px)}
-  .tnav{display:flex;gap:clamp(.8rem,2vw,1.5rem);flex-wrap:wrap}
-  .tnav a{font-size:.84rem;color:var(--mute);font-weight:500}.tnav a:hover{color:var(--ink)}
-  @media(max-width:620px){.tnav a{display:none}}
+  .tnav{display:flex;gap:clamp(.8rem,2vw,1.4rem);flex-wrap:wrap}
+  .tnav a{font-family:var(--mono);font-size:.74rem;color:var(--slate);letter-spacing:.02em}.tnav a:hover{color:var(--flame)}
+  @media(max-width:640px){.tnav a:not(.gh){display:none}}
 
-  .phero{padding:clamp(2.4rem,6vw,4rem) 0 clamp(1.6rem,4vw,2.4rem)}
-  .eyebrow{font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-d);margin:0 0 1.2rem;display:flex;gap:.7rem;flex-wrap:wrap}
-  .phero h1{font-size:clamp(2.1rem,4.5vw,3.5rem);line-height:1.06;margin:0 0 1.2rem;max-width:20ch}
+  /* hero */
+  .phero{padding:clamp(2.4rem,5vw,3.6rem) 0 clamp(1.4rem,3vw,2rem)}
+  .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:var(--flame-d);text-transform:uppercase;margin:0 0 1.1rem}
+  .phero h1{font-size:clamp(2rem,4.1vw,3.15rem);line-height:1.07;margin:0 0 1.1rem;max-width:21ch}
   .phero h1 .hl{color:var(--flame)}
-  .phero .lead{font-size:clamp(1.05rem,1.5vw,1.22rem);line-height:1.6;color:var(--mute);max-width:60ch;margin:0 0 1.8rem}
-  .meta{display:flex;gap:2rem;flex-wrap:wrap;margin:0 0 1.8rem}
-  .meta .mi .l{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:.25rem}
-  .meta .mi .v{font-weight:600;font-size:.95rem}
-  .cta{display:flex;gap:.8rem;flex-wrap:wrap}
-  .btn{font-family:var(--sans);font-weight:600;font-size:.9rem;padding:.78em 1.4em;border-radius:999px;border:1.5px solid var(--ink);transition:transform .14s,background .2s,color .2s;display:inline-block}
+  .phero .lead{font-size:clamp(1.02rem,1.4vw,1.15rem);line-height:1.62;color:var(--slate);max-width:62ch;margin:0 0 1.8rem}
+  .meta{display:grid;grid-template-columns:repeat(3,auto);gap:2.2rem;justify-content:start;margin:0 0 1.7rem}
+  .meta .l{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:.3rem}
+  .meta .v{font-weight:600;font-size:.92rem}
+  .cta{display:flex;gap:.7rem;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-weight:500;font-size:.82rem;padding:.7em 1.3em;border-radius:8px;border:1.5px solid var(--ink);transition:transform .14s,background .2s,color .2s;display:inline-block}
   .btn:hover{transform:translateY(-2px)}
-  .btn.solid{background:var(--flame);color:#fff;border-color:var(--flame)}.btn.solid:hover{background:var(--flame-d);border-color:var(--flame-d)}
+  .btn.solid{background:var(--ink);color:var(--ivory);border-color:var(--ink)}.btn.solid:hover{background:var(--flame);border-color:var(--flame)}
+  @media(max-width:560px){.meta{grid-template-columns:1fr 1fr;gap:1.2rem}}
 
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.4rem 0;margin-top:.4rem}
-  .kpi .n{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.7vw,2.1rem);line-height:1}
-  .kpi:nth-child(1) .n{color:var(--flame)}.kpi:nth-child(2) .n{color:var(--teal-d)}.kpi:nth-child(3) .n{color:var(--lilac-d)}.kpi:nth-child(4) .n{color:var(--gold-d)}
-  .kpi .l{font-size:.78rem;color:var(--mute);margin-top:.4rem}
-  @media(max-width:620px){.kpis{grid-template-columns:1fr 1fr;gap:1.2rem}}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:.6rem;background:var(--paper)}
+  .kpi{padding:1.2rem 1.1rem;border-right:1px solid var(--line)}
+  .kpi:last-child{border-right:none}
+  .kpi .n{font-family:var(--display);font-weight:700;font-size:clamp(1.4rem,2.5vw,1.95rem);line-height:1}
+  .kpi.hot .n{color:var(--flame)}
+  .kpi .l{font-family:var(--mono);font-size:.68rem;color:var(--slate);margin-top:.5rem;line-height:1.4;letter-spacing:.01em}
+  @media(max-width:640px){.kpis{grid-template-columns:1fr 1fr}.kpi:nth-child(2){border-right:none}.kpi:nth-child(1),.kpi:nth-child(2){border-bottom:1px solid var(--line)}}
 
-  .section{padding:clamp(2.6rem,6vw,4.5rem) 0}
-  .seyebrow{font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--flame-d);margin:0 0 1rem}
-  .seyebrow.teal{color:var(--teal-d)} .seyebrow.lilac{color:var(--lilac-d)} .seyebrow.gold{color:var(--gold-d)}
-  .shead{font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.1;margin:0 0 1.3rem;max-width:24ch}
-  .shead em{font-style:italic;font-family:var(--elegant);font-weight:400;color:var(--flame)}
-  .lede{color:var(--mute);max-width:64ch;margin:0 0 1rem;font-size:1.04rem;line-height:1.7}
+  /* pipeline spine */
+  .spine{margin:clamp(1.8rem,4vw,2.6rem) 0 0}
+  .spine .hd{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 1rem;display:flex;align-items:center;gap:.7rem}
+  .spine .hd::after{content:"";flex:1;height:1px;background:var(--line)}
+  .stages{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper)}
+  .stage{padding:1rem .85rem;border-right:1px solid var(--line);position:relative}
+  .stage:last-child{border-right:none}
+  .stage .si{font-family:var(--mono);font-size:.66rem;color:var(--flame);letter-spacing:.04em}
+  .stage .sn{font-family:var(--display);font-weight:700;font-size:.96rem;margin:.35rem 0 .35rem}
+  .stage .sw{font-size:.74rem;color:var(--slate);line-height:1.35;margin-bottom:.5rem}
+  .stage .st{font-family:var(--mono);font-size:.66rem;color:var(--ink);background:var(--ivory);border:1px solid var(--line);border-radius:5px;padding:.15em .45em;display:inline-block}
+  .stage::after{content:"→";position:absolute;right:-7px;top:50%;transform:translateY(-50%);color:var(--taupe);font-size:.8rem;z-index:2;background:var(--paper);padding:1px}
+  .stage:last-child::after{display:none}
+  @media(max-width:820px){.stages{grid-template-columns:1fr 1fr 1fr}.stage:nth-child(3)::after,.stage:nth-child(6)::after{display:none}.stage:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+  @media(max-width:520px){.stages{grid-template-columns:1fr 1fr}.stage::after{display:none}}
+
+  /* sections */
+  .section{padding:clamp(2.2rem,4.5vw,3.4rem) 0;border-top:1px solid var(--line2)}
+  .shd{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 .9rem;display:flex;gap:.7rem;align-items:center}
+  .shd .ix{color:var(--flame);font-weight:600}
+  .shead{font-size:clamp(1.55rem,2.9vw,2.25rem);line-height:1.12;margin:0 0 1.1rem;max-width:24ch}
+  .shead .hl{color:var(--flame)}
+  .lede{color:var(--slate);max-width:64ch;margin:0 0 1rem;font-size:1.02rem;line-height:1.62}
   .lede b{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.84em;background:var(--paper);border:1px solid var(--line);color:var(--ink);padding:.06em .35em;border-radius:5px}
 
-  /* method flow */
-  .arch{display:flex;align-items:stretch;gap:.5rem;flex-wrap:wrap;margin-top:1.6rem;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.6rem}
-  .node{flex:1 1 130px;min-width:120px;border-radius:14px;padding:1rem .85rem;text-align:center;background:var(--ivory);border:1px solid var(--line)}
-  .node .ph{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:.5rem}
-  .node .nm{font-family:var(--display);font-weight:700;font-size:.98rem;margin-bottom:.3rem;line-height:1.1}
-  .node .fn{font-family:var(--sans);font-size:.72rem;color:var(--flame-d)}
-  .node.x1{border-color:rgba(255,90,69,.4)} .node.x2{border-color:rgba(169,139,224,.5)}
-  .node.x3{border-color:rgba(255,194,60,.6)} .node.x4{border-color:rgba(22,183,154,.45)} .node.x5{border-color:rgba(126,95,192,.5)}
-  .arrow{align-self:center;color:var(--mute);font-weight:700;font-size:1.1rem}
-  @media(max-width:720px){.arch{flex-direction:column}.arrow{transform:rotate(90deg)}}
-
-  /* finding block: text + figure */
-  .find{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,3rem);align-items:center;padding:clamp(1.8rem,4vw,2.6rem) 0;border-top:1px solid var(--line)}
+  /* finding block */
+  .find{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(1.4rem,3.5vw,2.6rem);align-items:center;margin-top:1.4rem}
   .find.rev .ftext{order:2}
-  .find .ch{font-weight:600;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-d);margin:0 0 .7rem}
-  .find h3{font-size:1.45rem;line-height:1.15;margin:0 0 .7rem}
-  .find p{color:var(--mute);font-size:1rem;line-height:1.65;margin:0 0 .8rem;max-width:52ch}
-  .find p code{font-family:ui-monospace,Menlo,monospace;font-size:.85em;background:var(--lilac-soft);color:var(--lilac-d);padding:.08em .38em;border-radius:5px}
-  .find .fig{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem}
-  .find .fig img{width:100%;height:auto;display:block;border-radius:8px}
-  .find .fign{font-size:.76rem;color:var(--mute);margin:.7rem 0 0;font-style:italic;font-family:var(--elegant)}
-  @media(max-width:720px){.find{grid-template-columns:1fr;gap:1.2rem}.find.rev .ftext{order:0}}
+  .find .ch{font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 .6rem}
+  .find h3{font-size:1.3rem;line-height:1.18;margin:0 0 .6rem}
+  .find p{color:var(--slate);font-size:.97rem;line-height:1.6;margin:0 0 .7rem;max-width:52ch}
+  .find .fig{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:.9rem}
+  .find .fig img{width:100%;height:auto;display:block;border-radius:6px}
+  .find .fign{font-family:var(--mono);font-size:.68rem;color:var(--mute);margin:.7rem 0 0;letter-spacing:.02em}
+  @media(max-width:760px){.find{grid-template-columns:1fr;gap:1.1rem}.find.rev .ftext{order:0}}
 
   /* rule card */
-  .rule{background:var(--ink);color:var(--ivory);border-radius:18px;padding:1.6rem 1.8rem;margin:1.2rem 0}
-  .rule .if{font-family:ui-monospace,Menlo,monospace;font-size:1rem;line-height:1.7}
-  .rule .if .k{color:var(--gold)} .rule .if .then{color:var(--flame)}
-  .rule .stats{display:flex;gap:2rem;margin-top:1rem;flex-wrap:wrap}
-  .rule .stats .s b{font-family:var(--display);font-size:1.3rem;color:#fff} .rule .stats .s span{font-size:.78rem;color:rgba(255,248,240,.65);display:block}
+  .rule{background:var(--ink);color:var(--ivory);border-radius:12px;padding:1.5rem 1.7rem;margin:1.2rem 0}
+  .rule .if{font-family:var(--mono);font-size:.94rem;line-height:1.7}
+  .rule .if .k{color:var(--flame)} .rule .if .then{color:#7FD9C9}
+  .rule .stats{display:flex;gap:2.2rem;margin-top:1.1rem;flex-wrap:wrap}
+  .rule .stats .s b{font-family:var(--display);font-size:1.35rem;color:#fff;display:block} .rule .stats .s span{font-family:var(--mono);font-size:.68rem;color:rgba(252,246,236,.6)}
 
-  /* importance bars */
-  .imp{margin-top:1rem}
-  .imp .row{display:flex;align-items:center;gap:1rem;margin-bottom:.7rem}
-  .imp .nm{flex:0 0 42%;font-size:.92rem;font-weight:500}
-  .imp .track{flex:1;height:12px;background:var(--lilac-soft);border-radius:999px;overflow:hidden}
-  .imp .fill{height:100%;border-radius:999px;background:var(--flame)}
-  .imp .row:nth-child(2) .fill{background:var(--teal)} .imp .row:nth-child(3) .fill{background:var(--lilac-d)}
-  .imp .pct{flex:0 0 3.5rem;text-align:right;font-family:var(--display);font-weight:700;font-size:.95rem}
+  /* perf */
+  .perf{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem}
+  .perf .p{flex:1 1 150px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem}
+  .perf .p .n{font-family:var(--display);font-weight:700;font-size:1.55rem}
+  .perf .p.best{border-color:var(--flame);background:rgba(255,90,69,.05)} .perf .p.best .n{color:var(--flame)}
+  .perf .p .l{font-family:var(--mono);font-size:.68rem;color:var(--slate);margin-top:.3rem;line-height:1.3}
 
-  /* perf compare */
-  .perf{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
-  .perf .p{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem}
-  .perf .p .n{font-family:var(--display);font-weight:700;font-size:1.6rem}
-  .perf .p.best{border-color:var(--flame);background:rgba(255,90,69,.06)} .perf .p.best .n{color:var(--flame)}
-  .perf .p .l{font-size:.8rem;color:var(--mute);margin-top:.2rem}
-
-  /* findings grid */
-  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1.6rem}
-  .fcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.4rem}
-  .fcard .big{font-family:var(--display);font-weight:700;font-size:1.5rem;margin-bottom:.5rem}
-  .fcard:nth-child(3n+1) .big{color:var(--flame)} .fcard:nth-child(3n+2) .big{color:var(--teal-d)} .fcard:nth-child(3n+3) .big{color:var(--lilac-d)}
-  .fcard h4{font-family:var(--display);font-size:1.02rem;margin:0 0 .4rem}
-  .fcard p{margin:0;font-size:.88rem;color:var(--mute);line-height:1.5}
-  @media(max-width:720px){.fgrid{grid-template-columns:1fr}.perf .p{flex:1 1 100%}}
-
-  /* methods table */
-  .mtable{width:100%;border-collapse:collapse;margin-top:1.4rem;font-size:.9rem}
-  .mtable th{text-align:left;font-weight:600;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:.6rem .8rem;border-bottom:2px solid var(--line)}
-  .mtable td{padding:.75rem .8rem;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:top}
-  .mtable td .v{font-weight:600;color:var(--teal-d);font-size:.8rem}
-  .mtable tr td:first-child{font-weight:600}
-  @media(max-width:720px){.mtable,.mtable thead,.mtable tbody,.mtable th,.mtable td,.mtable tr{display:block}.mtable th{display:none}.mtable td{border:none;padding:.2rem .8rem}.mtable tr{border-bottom:1px solid var(--line);padding:.8rem 0}}
-
-  .stackline{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
-  .stackline span{font-size:.82rem;font-weight:500;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:.4em .8em;border-radius:999px}
-
-  /* decision tree figure */
-  .dtree{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.4rem 1.2rem;margin-top:1.4rem;overflow-x:auto}
+  /* decision tree */
+  .dtree{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:1.4rem 1.1rem;margin-top:1.2rem;overflow-x:auto}
   .dtree svg{width:100%;min-width:640px;height:auto;display:block}
-  .dtree .legend{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:.6rem;font-size:.8rem;color:var(--mute)}
-  .dtree .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:.4em;vertical-align:middle}
-  .fcap{font-size:.76rem;color:var(--mute);margin:.8rem 0 0;font-style:italic;font-family:var(--elegant)}
+  .dtree .legend{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:.7rem;font-family:var(--mono);font-size:.7rem;color:var(--slate)}
+  .dtree .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.4em;vertical-align:middle}
+  .fcap{font-family:var(--mono);font-size:.68rem;color:var(--mute);margin:.8rem 0 0;letter-spacing:.02em}
 
   /* confusion matrix */
-  .cwrap{display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;max-width:460px;margin-top:1rem;align-items:center}
-  .cwrap .axis{font-size:.7rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;text-align:center}
-  .cell{border-radius:12px;padding:1rem;text-align:center;color:#fff}
+  .cwrap{display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem;max-width:440px;margin-top:1rem;align-items:center}
+  .cwrap .axis{font-family:var(--mono);font-size:.66rem;color:var(--slate);text-transform:uppercase;letter-spacing:.03em;text-align:center}
+  .cell{border-radius:10px;padding:.95rem;text-align:center}
   .cell b{font-family:var(--display);font-size:1.5rem;display:block;line-height:1}
-  .cell span{font-size:.72rem;opacity:.9}
-  .cell.tp{background:var(--teal)} .cell.tn{background:var(--teal-d)}
-  .cell.fp{background:#E9B84A;color:var(--ink)} .cell.fn{background:var(--flame)}
+  .cell span{font-family:var(--mono);font-size:.64rem;opacity:.85}
+  .cell.ok{background:rgba(15,140,121,.12);color:var(--teal)} .cell.err{background:rgba(255,90,69,.12);color:var(--flame-d)}
 
-  footer{border-top:1px solid var(--line);padding:2.4rem 0 3rem;margin-top:2rem}
-  .credit{font-size:.88rem;color:var(--mute);margin:0 0 1.4rem;max-width:60ch}
+  /* importance bars */
+  .imp{margin-top:1rem;max-width:680px}
+  .imp .row{display:grid;grid-template-columns:13rem 1fr 3rem;align-items:center;gap:1rem;margin-bottom:.65rem}
+  .imp .nm{font-size:.9rem;font-weight:500}
+  .imp .nm em{font-family:var(--mono);font-style:normal;font-size:.66rem;color:var(--flame-d)}
+  .imp .track{height:10px;background:var(--line2);border-radius:999px;overflow:hidden}
+  .imp .fill{height:100%;border-radius:999px;background:var(--taupe)}
+  .imp .row.hot .fill{background:var(--flame)}
+  .imp .pct{font-family:var(--mono);font-weight:600;font-size:.84rem;text-align:right}
+  @media(max-width:620px){.imp .row{grid-template-columns:8.5rem 1fr 2.6rem;gap:.6rem}.imp .nm{font-size:.8rem}}
+
+  /* findings ledger */
+  .ledger{margin-top:1.4rem;border-top:1px solid var(--ink)}
+  .lrow{display:grid;grid-template-columns:2.4rem 7rem 1fr;gap:1.4rem;padding:1.15rem 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .lrow .lix{font-family:var(--mono);font-size:.8rem;color:var(--mute)}
+  .lrow .lstat{font-family:var(--display);font-weight:700;font-size:1.5rem;line-height:1;color:var(--flame)}
+  .lrow .lstat.q{color:var(--ink);font-size:1.15rem}
+  .lrow .lbody h4{font-family:var(--display);font-size:1.05rem;margin:0 0 .3rem}
+  .lrow .lbody p{margin:0;font-size:.92rem;color:var(--slate);line-height:1.55;max-width:60ch}
+  @media(max-width:620px){.lrow{grid-template-columns:1.6rem 1fr;gap:.5rem 1rem}.lrow .lstat{grid-column:2;margin-bottom:.2rem}}
+
+  /* methods table */
+  .mtable{width:100%;border-collapse:collapse;margin-top:1.3rem;font-size:.88rem}
+  .mtable th{text-align:left;font-family:var(--mono);font-weight:500;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding:.6rem .8rem;border-bottom:1.5px solid var(--ink)}
+  .mtable td{padding:.7rem .8rem;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:top}
+  .mtable td:first-child{font-weight:600}
+  .mtable .v{font-family:var(--mono);font-weight:500;color:var(--teal);font-size:.74rem}
+  @media(max-width:720px){.mtable,.mtable tbody,.mtable th,.mtable td,.mtable tr{display:block}.mtable thead{display:none}.mtable td{border:none;padding:.15rem .8rem}.mtable tr{border-bottom:1px solid var(--line);padding:.8rem 0}}
+
+  .stackrow{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;margin-top:1.2rem;align-items:start}
+  .stackrow .sl{font-family:var(--mono);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding-top:.35rem}
+  .stackrow .si{display:flex;flex-wrap:wrap;gap:.5rem}
+  .stackrow .si span{font-family:var(--mono);font-size:.78rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:.35em .7em;border-radius:6px}
+  @media(max-width:560px){.stackrow{grid-template-columns:1fr;gap:.5rem}}
+
+  footer{border-top:1px solid var(--ink);padding:2rem 0 3rem;margin-top:1rem}
+  .credit{font-size:.84rem;color:var(--slate);margin:0 0 1.4rem;max-width:62ch}
   .credit b{color:var(--ink)}
-  .foot-in{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center;color:var(--mute);font-size:.85rem}
-  .foot-in .el{font-family:var(--elegant);font-style:italic;color:var(--flame-d)}
-  .foot-in .flinks{display:flex;gap:1.1rem}.foot-in .flinks a:hover{color:var(--ink)}
+  .foot-in{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center;color:var(--mute);font-family:var(--mono);font-size:.74rem}
+  .foot-in .flinks{display:flex;gap:1.1rem}.foot-in .flinks a:hover{color:var(--flame)}
 
-  html.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+  html.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
   html.js .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 </style>
@@ -164,13 +179,14 @@
 
 <header class="topbar">
   <div class="wrap topbar-in">
-    <a class="back" href="https://cece15.github.io/C.-Mutua-Portfolio/"><span class="a" aria-hidden="true">←</span> Cynthia Mutua</a>
+    <a class="back" href="https://cece15.github.io/C.-Mutua-Portfolio/"><span class="a" aria-hidden="true">←</span> cynthia mutua</a>
     <nav class="tnav" aria-label="Sections">
-      <a href="#story">The question</a>
-      <a href="#method">Method</a>
-      <a href="#findings">Findings</a>
-      <a href="#model">The model</a>
-      <a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">GitHub ↗</a>
+      <a href="#context">01_context</a>
+      <a href="#explore">02_explore</a>
+      <a href="#cluster">03_cluster</a>
+      <a href="#rules">04_rules</a>
+      <a href="#model">05_classify</a>
+      <a class="gh" href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">github ↗</a>
     </nav>
   </div>
 </header>
@@ -178,221 +194,214 @@
 <main class="wrap">
 
   <section class="phero">
-    <p class="eyebrow reveal">Machine learning · Clinical data mining · Knowledge discovery</p>
+    <p class="tag reveal">Knowledge discovery · clinical machine learning</p>
     <h1 class="reveal">What can routine clinical data reveal about <span class="hl">Alzheimer's</span> that clinicians might miss?</h1>
-    <p class="lead reveal">Early detection is our most powerful intervention, yet many patients are diagnosed only once the window has narrowed. This study ran a full knowledge-discovery pipeline over 2,149 patients to surface patterns hidden in ordinary clinical data: the kind collected at any standard visit.</p>
+    <p class="lead reveal">A complete knowledge-discovery pipeline over 2,149 patients: explore, cluster, mine rules, classify, then validate that the same signals hold across independent methods. The aim was never raw accuracy; it was a model a clinician can read, audit, and trust.</p>
     <div class="meta reveal">
-      <div class="mi"><div class="l">My role</div><div class="v">Led &amp; executed end to end</div></div>
-      <div class="mi"><div class="l">Context</div><div class="v">CIS 635 · GVSU, 2025</div></div>
-      <div class="mi"><div class="l">Aim</div><div class="v">Interpretability, not just accuracy</div></div>
+      <div><div class="l">Role</div><div class="v">Designed &amp; built end to end</div></div>
+      <div><div class="l">Scope</div><div class="v">2,149 patients · 35 features</div></div>
+      <div><div class="l">Pipeline</div><div class="v">5 methods · cross-validated</div></div>
     </div>
     <div class="cta reveal">
-      <a class="btn solid" href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">View the code ↗</a>
-      <a class="btn" href="https://cece15.github.io/C.-Mutua-Portfolio/#work">← All work</a>
+      <a class="btn solid" href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">view the code ↗</a>
+      <a class="btn" href="https://cece15.github.io/C.-Mutua-Portfolio/#work">← all work</a>
     </div>
     <div class="kpis reveal">
-      <div class="kpi"><div class="n">93.8%</div><div class="l">classification accuracy (91% sensitivity, 95% specificity)</div></div>
-      <div class="kpi"><div class="n">2,149</div><div class="l">patients across 35 clinical features</div></div>
-      <div class="kpi"><div class="n">39</div><div class="l">interpretable IF–THEN rules discovered</div></div>
-      <div class="kpi"><div class="n">5</div><div class="l">independent analytical methods</div></div>
+      <div class="kpi hot"><div class="n">93.8%</div><div class="l">accuracy<br>91% sens · 95% spec</div></div>
+      <div class="kpi"><div class="n">39</div><div class="l">interpretable<br>IF–THEN rules</div></div>
+      <div class="kpi"><div class="n">2,149</div><div class="l">patients<br>35 features</div></div>
+      <div class="kpi"><div class="n">5</div><div class="l">independent<br>methods</div></div>
+    </div>
+
+    <div class="spine reveal">
+      <p class="hd">pipeline</p>
+      <div class="stages">
+        <div class="stage"><div class="si">01</div><div class="sn">Ingest</div><div class="sw">load, validate, 70/30 stratified split</div><span class="st">pandas</span></div>
+        <div class="stage"><div class="si">02</div><div class="sn">Explore</div><div class="sw">correlations, distributions, balance</div><span class="st">seaborn</span></div>
+        <div class="stage"><div class="si">03</div><div class="sn">Cluster</div><div class="sw">k-means + hierarchical, k=2–7</div><span class="st">scikit-learn</span></div>
+        <div class="stage"><div class="si">04</div><div class="sn">Mine</div><div class="sw">association rules, Apriori</div><span class="st">mlxtend</span></div>
+        <div class="stage"><div class="si">05</div><div class="sn">Classify</div><div class="sw">decision tree, grid search</div><span class="st">scikit-learn</span></div>
+        <div class="stage"><div class="si">06</div><div class="sn">Validate</div><div class="sw">cross-method convergence</div><span class="st">numpy</span></div>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="story">
-    <p class="seyebrow reveal">The question</p>
-    <h2 class="shead reveal">Why this matters, <em>and who it affects.</em></h2>
-    <p class="lede reveal">Alzheimer's affects over 50 million people worldwide and is the most common cause of dementia. By the time most patients are diagnosed, the disease has already progressed: the memory slips, the missed appointments, the personality changes are noticed long before the clinical diagnosis arrives, and the window for early intervention has narrowed.</p>
-    <p class="lede reveal">So the question was deliberately practical: <b>can routine clinical data, collected at any standard visit, reveal patterns that help detect Alzheimer's earlier?</b> The goal was never raw prediction. It was interpretability: a model a clinician can read, audit, and trust.</p>
+  <section class="section" id="context">
+    <p class="shd reveal"><span class="ix">01</span> / context</p>
+    <h2 class="shead reveal">Diagnosis comes late. The data might come <span class="hl">earlier.</span></h2>
+    <p class="lede reveal">Alzheimer's affects over 50 million people worldwide and is the most common cause of dementia. By the time most patients are diagnosed, the disease has progressed: the memory slips and missed appointments are noticed long before the clinical call arrives, and the window for early intervention has closed.</p>
+    <p class="lede reveal">The question here is operational, not theoretical: <b>can data collected at any standard visit surface patterns that flag risk sooner?</b> And can it do so transparently enough that a clinician would actually use it?</p>
   </section>
 
-  <section class="section" id="method">
-    <p class="seyebrow teal reveal">The pipeline</p>
-    <h2 class="shead reveal">Five methods, <em>each checking the last.</em></h2>
-    <p class="lede reveal">A knowledge-discovery pipeline that moves from exploration to prediction, then asks the hardest question of all: do the same signals show up across independent methods?</p>
-    <div class="arch reveal" role="img" aria-label="Pipeline: EDA, then clustering, then association rules, then decision tree, then cross-method validation.">
-      <div class="node x1"><div class="ph">01</div><div class="nm">Explore</div><div class="fn">EDA · correlation</div></div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="node x2"><div class="ph">02</div><div class="nm">Cluster</div><div class="fn">k-means · hierarchical</div></div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="node x3"><div class="ph">03</div><div class="nm">Mine rules</div><div class="fn">Apriori</div></div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="node x4"><div class="ph">04</div><div class="nm">Classify</div><div class="fn">decision tree</div></div>
-      <span class="arrow" aria-hidden="true">→</span>
-      <div class="node x5"><div class="ph">05</div><div class="nm">Validate</div><div class="fn">cross-method</div></div>
-    </div>
-  </section>
-
-  <section class="section" id="findings">
-    <p class="seyebrow lilac reveal">Chapter one · exploration</p>
-    <h2 class="shead reveal">Functional decline matters more than cognitive tests alone.</h2>
+  <section class="section" id="explore">
+    <p class="shd reveal"><span class="ix">02</span> / exploration</p>
+    <h2 class="shead reveal">Functional decline outranks the memory test.</h2>
 
     <div class="find reveal">
       <div class="ftext">
-        <p class="ch">Who is in the data</p>
-        <h3>A realistic class balance</h3>
-        <p>35.4% of patients carry an Alzheimer's diagnosis, a 1.83:1 imbalance that mirrors clinical reality. That shaped everything downstream: stratified sampling and class-weighted models throughout.</p>
+        <p class="ch">data balance</p>
+        <h3>A realistic class split</h3>
+        <p>35.4% of patients carry a diagnosis, a 1.83:1 imbalance that mirrors clinical reality and drove the choice of stratified sampling and class-weighted models downstream.</p>
       </div>
-      <div class="fig"><img src="assets/chart-diagnosis.png" alt="Donut chart: 35.4 percent of the 2,149 patients have an Alzheimer's diagnosis" /><p class="fign">Figure 1 · diagnosis distribution</p></div>
+      <div class="fig"><img src="assets/chart-diagnosis.png" alt="Donut: 35.4 percent of 2,149 patients have an Alzheimer's diagnosis" /><p class="fign">fig.01 · diagnosis distribution</p></div>
     </div>
 
     <div class="find rev reveal">
       <div class="ftext">
-        <p class="ch">What predicts a diagnosis</p>
-        <h3>Daily-living ability outranks the memory test</h3>
-        <p>The strongest signals are <code>FunctionalAssessment</code> (r = −0.36) and <code>ADL</code> (r = −0.33), measures of how well a person manages daily life, which outrank even <code>MMSE</code> (r = −0.24). Subjective <code>MemoryComplaints</code> ranks third (r = +0.31), validating the clinical wisdom of listening to patients and families. No single feature exceeds r = 0.36: no one test is enough.</p>
+        <p class="ch">what predicts diagnosis</p>
+        <h3>Daily-living ability leads</h3>
+        <p>The strongest signals are <code>FunctionalAssessment</code> (r = −0.36) and <code>ADL</code> (r = −0.33), how well a person manages daily life, which outrank even <code>MMSE</code> (r = −0.24). Subjective <code>MemoryComplaints</code> ranks third (r = +0.31). No single feature exceeds 0.36: one test is never enough.</p>
       </div>
-      <div class="fig"><img src="assets/chart-correlation.png" alt="Bar chart of top features correlated with diagnosis: FunctionalAssessment -0.36, ADL -0.33, MemoryComplaints +0.31, MMSE -0.24" /><p class="fign">Figure 2 · top correlations with diagnosis</p></div>
+      <div class="fig"><img src="assets/chart-correlation.png" alt="Bar chart of top correlations with diagnosis, FunctionalAssessment highest at -0.36" /><p class="fign">fig.02 · top correlations with diagnosis</p></div>
     </div>
   </section>
 
-  <section class="section">
-    <p class="seyebrow teal reveal">Chapter two · clustering</p>
-    <h2 class="shead reveal">When the model "failed," it told us <em>something true.</em></h2>
+  <section class="section" id="cluster">
+    <p class="shd reveal"><span class="ix">03</span> / clustering</p>
+    <h2 class="shead reveal">A "failed" model that told us <span class="hl">something true.</span></h2>
     <div class="find reveal">
       <div class="ftext">
-        <p class="ch">Do discrete subtypes exist?</p>
-        <h3>No. And that is the finding.</h3>
-        <p>I tested k-means for k = 2 through 7 and validated with four metrics plus hierarchical clustering. Every signal agreed: silhouette scores of 0.05 to 0.06 (far below the 0.30 threshold), no elbow, and k-means versus hierarchical agreeing almost not at all (<code>ARI = 0.025</code>). The clusters were algorithmic artifacts, not real structure.</p>
-        <p>Rather than force it, I reframed it: Alzheimer's severity here lies on a <b>continuum</b>, not in discrete subtypes, consistent with the NIA-AA framework. No method will find what does not exist, and recognizing that takes rigor.</p>
+        <p class="ch">do subtypes exist?</p>
+        <h3>No, and that is the finding</h3>
+        <p>k-means across k = 2 to 7, four validation metrics, and hierarchical clustering all agreed: silhouette of 0.05 to 0.06 (far under the 0.30 bar), no elbow, and the two algorithms agreeing almost not at all (<code>ARI = 0.025</code>). The clusters were artifacts, not structure.</p>
+        <p>So I reframed it: severity here lies on a <b>continuum</b>, not in discrete subtypes, consistent with the NIA-AA framework. Knowing when not to force a result is its own kind of rigor.</p>
       </div>
-      <div class="fig"><img src="assets/chart-clustering.png" alt="Silhouette scores across k from 2 to 7, flat near 0.05, far below the 0.30 meaningful-cluster threshold" /><p class="fign">Figure 3 · silhouette across k · no real separation</p></div>
+      <div class="fig"><img src="assets/chart-clustering.png" alt="Silhouette score across k from 2 to 7, flat near 0.05, far below the 0.30 threshold" /><p class="fign">fig.03 · silhouette across k, no separation</p></div>
     </div>
   </section>
 
-  <section class="section">
-    <p class="seyebrow gold reveal">Chapter three · association rules</p>
-    <h2 class="shead reveal">Which <em>combinations</em> of symptoms predict a diagnosis?</h2>
-    <p class="lede reveal">Since no subtypes existed, the question shifted: not "what type of patient is this?" but "when these symptoms co-occur, how predictive is that?" The Apriori algorithm surfaced <b>39 interpretable rules</b>, each at 60% confidence or higher with lift ≥ 1.5. The strongest:</p>
+  <section class="section" id="rules">
+    <p class="shd reveal"><span class="ix">04</span> / association rules</p>
+    <h2 class="shead reveal">Which <span class="hl">combinations</span> of symptoms predict it?</h2>
+    <p class="lede reveal">With no subtypes to find, the question shifted to co-occurrence. Apriori surfaced <b>39 interpretable rules</b>, each at 60% confidence or higher with lift ≥ 1.5. The strongest:</p>
     <div class="rule reveal">
-      <p class="if"><span class="k">IF</span> MemoryComplaints <span class="k">AND</span> MMSE = severe impairment <span class="then">→ Alzheimer's diagnosis</span></p>
+      <p class="if"><span class="k">IF</span> MemoryComplaints <span class="k">AND</span> MMSE = severe impairment <span class="then">→ Alzheimer's</span></p>
       <div class="stats">
         <div class="s"><b>84%</b><span>confidence</span></div>
         <div class="s"><b>2.36×</b><span>lift vs base rate</span></div>
-        <div class="s"><b>51%</b><span>of all rules feature MemoryComplaints</span></div>
+        <div class="s"><b>51%</b><span>of rules use MemoryComplaints</span></div>
       </div>
     </div>
-    <p class="lede reveal">The top three antecedents are all behavioral or subjective, not blood tests or imaging. Patient and caregiver-reported memory concerns are not "soft" data; they are among the strongest signals available.</p>
-    <div class="find reveal" style="border-top:none;padding-top:.6rem">
+    <div class="find reveal" style="margin-top:1.4rem">
       <div class="ftext">
-        <p class="ch">What the rules are built from</p>
-        <h3>Three signals carry the rules</h3>
-        <p>Across all 39 rules, <code>MemoryComplaints</code> appears far more than anything else, followed by severe <code>MMSE</code> and <code>BehavioralProblems</code>. The two highlighted here also dominate the decision tree, the first hint of convergence.</p>
+        <p class="ch">what the rules are built from</p>
+        <h3>Three signals carry them</h3>
+        <p>Across all 39 rules, <code>MemoryComplaints</code> dominates, then severe <code>MMSE</code> and <code>BehavioralProblems</code>. The two highlighted also top the decision tree, the first sign of convergence.</p>
       </div>
-      <div class="fig"><img src="assets/chart-antecedents.png" alt="Bar chart of features appearing in association-rule antecedents: MemoryComplaints 30, MMSE severe 11, BehavioralProblems 9, then smaller counts" /><p class="fign">Figure 4 · most common antecedents across the 39 rules</p></div>
+      <div class="fig"><img src="assets/chart-antecedents.png" alt="Bar chart of features in rule antecedents, MemoryComplaints 30, MMSE-severe 11, BehavioralProblems 9" /><p class="fign">fig.04 · antecedent frequency across rules</p></div>
     </div>
   </section>
 
   <section class="section" id="model">
-    <p class="seyebrow reveal">Chapter four · the model</p>
-    <h2 class="shead reveal">A model a clinician can actually <em>read.</em></h2>
-    <p class="lede reveal">A grid search across 12 configurations landed on a decision tree (max depth 5, minimum 10 samples per leaf): <b>93.8% accuracy, 0.912 F1, 91% sensitivity, 95% specificity</b>, fully transparent, with a reasoning path you can follow for any patient.</p>
+    <p class="shd reveal"><span class="ix">05</span> / classification</p>
+    <h2 class="shead reveal">A model a clinician can actually <span class="hl">read.</span></h2>
+    <p class="lede reveal">A 12-configuration grid search landed on a decision tree (depth 5, min 10 samples per leaf): <b>93.8% accuracy, 0.912 F1, 91% sensitivity, 95% specificity</b>, fully transparent, with a path you can follow for any patient.</p>
     <div class="perf reveal">
-      <div class="p"><div class="n">64.7%</div><div class="l">baseline (always predict "no AD")</div></div>
+      <div class="p"><div class="n">64.7%</div><div class="l">baseline (predict "no AD")</div></div>
       <div class="p"><div class="n">81.6%</div><div class="l">logistic regression</div></div>
-      <div class="p best"><div class="n">93.8%</div><div class="l">interpretable decision tree</div></div>
+      <div class="p best"><div class="n">93.8%</div><div class="l">interpretable tree</div></div>
     </div>
 
-    <h3 style="font-family:var(--display);font-size:1.2rem;margin:2.2rem 0 .3rem">The tree a clinician can actually read</h3>
-    <p style="color:var(--mute);font-size:.95rem;margin:0 0 .4rem;max-width:62ch">The very first split is <code style="font-family:ui-monospace,monospace;font-size:.85em;background:var(--lilac-soft);color:var(--lilac-d);padding:.05em .3em;border-radius:4px">FunctionalAssessment</code>, not a memory test. The structure mirrors how a clinician reasons: check whether someone can manage daily life, then let cognitive and behavioral signals refine the call.</p>
-    <div class="dtree reveal" role="img" aria-label="Top three levels of the decision tree. Root splits on FunctionalAssessment at 4.97, then MMSE and MemoryComplaints, then ADL, CholesterolTotal, BehavioralProblems and MMSE.">
-      <svg viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" font-family="'Mona Sans',-apple-system,sans-serif">
-        <g stroke="#C9BFB0" stroke-width="1.6" fill="none">
+    <h3 style="font-family:var(--display);font-size:1.15rem;margin:2rem 0 .3rem">The tree, recreated from the trained model</h3>
+    <p style="color:var(--slate);font-size:.95rem;margin:0 0 .3rem;max-width:62ch">The first split is <code>FunctionalAssessment</code>, not a memory test. The structure mirrors how a clinician reasons: check daily function first, then let cognition and behavior refine the call.</p>
+    <div class="dtree reveal" role="img" aria-label="Top three levels of the decision tree, root splits on FunctionalAssessment 4.97.">
+      <svg viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',monospace">
+        <g stroke="#CBC1B4" stroke-width="1.5" fill="none">
           <path d="M460,76 L230,150"/><path d="M460,76 L690,150"/>
           <path d="M230,208 L115,300"/><path d="M230,208 L345,300"/>
           <path d="M690,208 L575,300"/><path d="M690,208 L805,300"/>
         </g>
-        <g font-size="11" fill="#8A8290" font-weight="600">
-          <text x="328" y="116" text-anchor="middle">True</text>
-          <text x="596" y="116" text-anchor="middle">False</text>
+        <g font-size="10.5" fill="#6F6873">
+          <text x="328" y="116" text-anchor="middle">true</text>
+          <text x="596" y="116" text-anchor="middle">false</text>
         </g>
-        <!-- root -->
-        <g><rect x="365" y="18" width="190" height="58" rx="12" fill="#FFF8F0" stroke="#C9BFB0" stroke-width="1.6"/>
-          <text x="460" y="43" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">FunctionalAssessment ≤ 4.97</text>
-          <text x="460" y="61" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 1504 · the root split</text></g>
-        <!-- level 2 -->
-        <g><rect x="135" y="150" width="190" height="58" rx="12" fill="#FFE7E2" stroke="#FF5A45" stroke-width="1.6"/>
-          <text x="230" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">MMSE ≤ 24.0</text>
-          <text x="230" y="193" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 713 · leans AD</text></g>
-        <g><rect x="595" y="150" width="190" height="58" rx="12" fill="#D8F3ED" stroke="#16B79A" stroke-width="1.6"/>
-          <text x="690" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">MemoryComplaints = 0</text>
-          <text x="690" y="193" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 791 · leans No AD</text></g>
-        <!-- level 3 -->
-        <g><rect x="20" y="300" width="190" height="58" rx="12" fill="#FFE7E2" stroke="#FF5A45" stroke-width="1.6"/>
-          <text x="115" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">ADL ≤ 5.1</text>
-          <text x="115" y="343" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 577 · AD</text></g>
-        <g><rect x="250" y="300" width="190" height="58" rx="12" fill="#D8F3ED" stroke="#16B79A" stroke-width="1.6"/>
-          <text x="345" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">CholesterolTotal ≤ 219</text>
-          <text x="345" y="343" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 136 · No AD</text></g>
-        <g><rect x="480" y="300" width="190" height="58" rx="12" fill="#D8F3ED" stroke="#16B79A" stroke-width="1.6"/>
-          <text x="575" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">BehavioralProblems = 0</text>
-          <text x="575" y="343" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 630 · No AD</text></g>
-        <g><rect x="710" y="300" width="190" height="58" rx="12" fill="#FFE7E2" stroke="#FF5A45" stroke-width="1.6"/>
-          <text x="805" y="325" text-anchor="middle" font-size="12" font-weight="700" fill="#2B2230">MMSE ≤ 23.2</text>
-          <text x="805" y="343" text-anchor="middle" font-size="10.5" fill="#6f6772">n = 161 · AD</text></g>
+        <g><rect x="365" y="18" width="190" height="58" rx="9" fill="#FCF6EC" stroke="#221C26" stroke-width="1.4"/>
+          <text x="460" y="43" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">FunctionalAssessment ≤ 4.97</text>
+          <text x="460" y="61" text-anchor="middle" font-size="9.5" fill="#6F6873">n=1504 · root split</text></g>
+        <g><rect x="135" y="150" width="190" height="58" rx="9" fill="#FFEDE9" stroke="#FF5A45" stroke-width="1.4"/>
+          <text x="230" y="175" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">MMSE ≤ 24.0</text>
+          <text x="230" y="193" text-anchor="middle" font-size="9.5" fill="#6F6873">n=713 · leans AD</text></g>
+        <g><rect x="595" y="150" width="190" height="58" rx="9" fill="#E2F1ED" stroke="#0F8C79" stroke-width="1.4"/>
+          <text x="690" y="175" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">MemoryComplaints = 0</text>
+          <text x="690" y="193" text-anchor="middle" font-size="9.5" fill="#6F6873">n=791 · leans No AD</text></g>
+        <g><rect x="20" y="300" width="190" height="58" rx="9" fill="#FFEDE9" stroke="#FF5A45" stroke-width="1.4"/>
+          <text x="115" y="325" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">ADL ≤ 5.1</text>
+          <text x="115" y="343" text-anchor="middle" font-size="9.5" fill="#6F6873">n=577 · AD</text></g>
+        <g><rect x="250" y="300" width="190" height="58" rx="9" fill="#E2F1ED" stroke="#0F8C79" stroke-width="1.4"/>
+          <text x="345" y="325" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">CholesterolTotal ≤ 219</text>
+          <text x="345" y="343" text-anchor="middle" font-size="9.5" fill="#6F6873">n=136 · No AD</text></g>
+        <g><rect x="480" y="300" width="190" height="58" rx="9" fill="#E2F1ED" stroke="#0F8C79" stroke-width="1.4"/>
+          <text x="575" y="325" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">BehavioralProblems = 0</text>
+          <text x="575" y="343" text-anchor="middle" font-size="9.5" fill="#6F6873">n=630 · No AD</text></g>
+        <g><rect x="710" y="300" width="190" height="58" rx="9" fill="#FFEDE9" stroke="#FF5A45" stroke-width="1.4"/>
+          <text x="805" y="325" text-anchor="middle" font-size="11.5" font-weight="600" fill="#221C26">MMSE ≤ 23.2</text>
+          <text x="805" y="343" text-anchor="middle" font-size="9.5" fill="#6F6873">n=161 · AD</text></g>
       </svg>
-      <div class="legend"><span><i style="background:#16B79A"></i>leans / predicts No AD</span><span><i style="background:#FF5A45"></i>leans / predicts AD</span></div>
+      <div class="legend"><span><i style="background:#0F8C79"></i>leans No AD</span><span><i style="background:#FF5A45"></i>leans AD</span></div>
     </div>
-    <p class="fcap">Figure 5 · top three levels of the tree (depth 5 overall), recreated from the trained model</p>
+    <p class="fcap">fig.05 · top three levels of the depth-5 tree</p>
 
-    <h3 style="font-family:var(--display);font-size:1.2rem;margin:2.2rem 0 .3rem">Where it lands on 645 held-out patients</h3>
+    <h3 style="font-family:var(--display);font-size:1.15rem;margin:2.2rem 0 .3rem">645 held-out patients</h3>
     <div class="cwrap reveal">
       <div></div>
-      <div class="axis">Predicted No&nbsp;AD</div>
-      <div class="axis">Predicted AD</div>
-      <div class="axis">Actual<br>No&nbsp;AD</div>
-      <div class="cell tn"><b>397</b><span>correctly cleared</span></div>
-      <div class="cell fp"><b>20</b><span>false alarm</span></div>
-      <div class="axis">Actual<br>AD</div>
-      <div class="cell fn"><b>20</b><span>missed</span></div>
-      <div class="cell tp"><b>208</b><span>correctly caught</span></div>
+      <div class="axis">pred no&nbsp;AD</div>
+      <div class="axis">pred AD</div>
+      <div class="axis">actual<br>no&nbsp;AD</div>
+      <div class="cell ok"><b>397</b><span>cleared</span></div>
+      <div class="cell err"><b>20</b><span>false alarm</span></div>
+      <div class="axis">actual<br>AD</div>
+      <div class="cell err"><b>20</b><span>missed</span></div>
+      <div class="cell ok"><b>208</b><span>caught</span></div>
     </div>
-    <p class="fcap">91% sensitivity (208 of 228 AD cases caught) · 95% specificity (397 of 417 cleared)</p>
+    <p class="fcap">91% sensitivity · 95% specificity</p>
 
-    <h3 style="font-family:var(--display);font-size:1.2rem;margin:2.2rem 0 .3rem">Five features drive 98.4% of the prediction</h3>
-    <p style="color:var(--mute);font-size:.95rem;margin:0 0 1rem;max-width:62ch">The top three are functional and cognitive, not cardiovascular; assessing daily-living ability may be a more sensitive early indicator than cognitive testing alone. The two marked also surface in the association rules, the convergence that makes them trustworthy.</p>
+    <h3 style="font-family:var(--display);font-size:1.15rem;margin:2.2rem 0 .3rem">Five features drive 98.4% of the prediction</h3>
+    <p style="color:var(--slate);font-size:.95rem;margin:0 0 1rem;max-width:62ch">The two marked also surface in the association rules, the convergence that makes them trustworthy.</p>
     <div class="imp reveal">
-      <div class="row"><div class="nm">FunctionalAssessment</div><div class="track"><div class="fill" style="width:100%;background:#FF5A45"></div></div><div class="pct">23.3%</div></div>
-      <div class="row"><div class="nm">MMSE</div><div class="track"><div class="fill" style="width:91%;background:#16B79A"></div></div><div class="pct">21.2%</div></div>
-      <div class="row"><div class="nm">ADL</div><div class="track"><div class="fill" style="width:79%;background:#7E5FC0"></div></div><div class="pct">18.4%</div></div>
-      <div class="row"><div class="nm">BehavioralProblems <span style="font-size:.7rem;color:var(--gold-d);font-weight:600">· also in rules</span></div><div class="track"><div class="fill" style="width:79%;background:#D99400"></div></div><div class="pct">18.3%</div></div>
-      <div class="row"><div class="nm">MemoryComplaints <span style="font-size:.7rem;color:var(--gold-d);font-weight:600">· also in rules</span></div><div class="track"><div class="fill" style="width:74%;background:#E23B26"></div></div><div class="pct">17.2%</div></div>
+      <div class="row hot"><div class="nm">FunctionalAssessment</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="pct">23.3%</div></div>
+      <div class="row"><div class="nm">MMSE</div><div class="track"><div class="fill" style="width:91%"></div></div><div class="pct">21.2%</div></div>
+      <div class="row"><div class="nm">ADL</div><div class="track"><div class="fill" style="width:79%"></div></div><div class="pct">18.4%</div></div>
+      <div class="row hot"><div class="nm">BehavioralProblems <em>· also in rules</em></div><div class="track"><div class="fill" style="width:79%"></div></div><div class="pct">18.3%</div></div>
+      <div class="row hot"><div class="nm">MemoryComplaints <em>· also in rules</em></div><div class="track"><div class="fill" style="width:74%"></div></div><div class="pct">17.2%</div></div>
     </div>
-    <p style="color:var(--mute);font-size:.9rem;margin:1rem 0 0;font-style:italic;font-family:var(--elegant)">The top three account for 62.9% of all predictive power; every remaining feature past the top five contributes under 1%.</p>
+    <p style="color:var(--mute);font-size:.85rem;margin:1rem 0 0;font-family:var(--mono)">top three = 62.9% · everything past the top five contributes under 1%</p>
   </section>
 
   <section class="section">
-    <p class="seyebrow teal reveal">Convergence</p>
-    <h2 class="shead reveal">Three independent methods, <em>the same answer.</em></h2>
-    <p class="lede reveal">The strongest validation is not one number; it is agreement. <b>MemoryComplaints</b> and <b>BehavioralProblems</b> surface as important in correlation analysis, in the association rules, and in the decision-tree splits, three methods that share no assumptions, pointing to the same clinically central signals.</p>
+    <p class="shd reveal"><span class="ix">06</span> / validation</p>
+    <h2 class="shead reveal">Three independent methods, <span class="hl">one answer.</span></h2>
+    <p class="lede reveal">The strongest validation is not a single score; it is agreement. <b>MemoryComplaints</b> and <b>BehavioralProblems</b> rank high in correlation, in the association rules, and in the tree splits, three methods sharing no assumptions, pointing at the same clinically central signals.</p>
 
-    <p class="seyebrow reveal" style="margin-top:2.6rem">The findings</p>
-    <h2 class="shead reveal">Six things this revealed.</h2>
-    <div class="fgrid">
-      <div class="fcard reveal"><div class="big">93.8%</div><h4>Interpretable models work</h4><p>A transparent tree beats logistic regression by 12 points. Black-box models are not required for excellent clinical prediction.</p></div>
-      <div class="fcard reveal"><div class="big">Continuum</div><h4>No discrete subtypes</h4><p>Silhouette ≈ 0.06, ARI = 0.025: Alzheimer's severity varies continuously, consistent with current biological frameworks.</p></div>
-      <div class="fcard reveal"><div class="big">84%</div><h4>One actionable rule</h4><p>Memory complaints plus severe MMSE impairment gives 84% confidence of diagnosis: a usable screening guideline.</p></div>
-      <div class="fcard reveal"><div class="big">Function</div><h4>Function outranks cognition</h4><p>FunctionalAssessment (23.3%) beats MMSE (21.2%) across every method. Daily-living ability may be the earlier indicator.</p></div>
-      <div class="fcard reveal"><div class="big">51%</div><h4>Subjective reports matter</h4><p>MemoryComplaints appears in 51% of all 39 rules. Patient and caregiver concerns are among the strongest signals available.</p></div>
-      <div class="fcard reveal"><div class="big">3 methods</div><h4>Convergent validation</h4><p>MemoryComplaints and BehavioralProblems matter in correlation, rules, and tree splits: independent evidence of their centrality.</p></div>
+    <div class="ledger reveal">
+      <div class="lrow"><div class="lix">01</div><div class="lstat">93.8%</div><div class="lbody"><h4>Interpretable beats black box</h4><p>A transparent tree outperforms logistic regression by 12 points; opacity buys nothing here.</p></div></div>
+      <div class="lrow"><div class="lix">02</div><div class="lstat q">Continuum</div><div class="lbody"><h4>No discrete subtypes exist</h4><p>Silhouette ≈ 0.06, ARI = 0.025: severity varies continuously, consistent with current biology.</p></div></div>
+      <div class="lrow"><div class="lix">03</div><div class="lstat">84%</div><div class="lbody"><h4>One actionable screening rule</h4><p>Memory complaints plus severe MMSE impairment gives 84% confidence, a usable guideline.</p></div></div>
+      <div class="lrow"><div class="lix">04</div><div class="lstat q">Function</div><div class="lbody"><h4>Function outranks cognition</h4><p>FunctionalAssessment (23.3%) beats MMSE (21.2%) in every method; daily-living ability is the earlier signal.</p></div></div>
+      <div class="lrow"><div class="lix">05</div><div class="lstat">51%</div><div class="lbody"><h4>Subjective reports matter</h4><p>MemoryComplaints appears in 51% of all rules; patient and caregiver concern is hard signal, not noise.</p></div></div>
+      <div class="lrow"><div class="lix">06</div><div class="lstat q">×3</div><div class="lbody"><h4>Convergent validation</h4><p>Two features matter in correlation, rules, and tree splits at once, independent evidence of their centrality.</p></div></div>
     </div>
   </section>
 
   <section class="section">
-    <p class="seyebrow lilac reveal">The methods</p>
-    <h2 class="shead reveal">How every number was produced.</h2>
+    <p class="shd reveal"><span class="ix">+</span> / how every number was produced</p>
     <table class="mtable reveal">
-      <thead><tr><th>Method</th><th>Question</th><th>Key result</th><th>Verdict</th></tr></thead>
+      <thead><tr><th>method</th><th>question</th><th>result</th><th>verdict</th></tr></thead>
       <tbody>
-        <tr><td>Exploratory analysis</td><td>Which features relate most to diagnosis?</td><td>FunctionalAssessment r = −0.36; no single perfect predictor</td><td><span class="v">Foundation</span></td></tr>
-        <tr><td>K-means (k = 2–7)</td><td>Do discrete subtypes exist?</td><td>Silhouette 0.05–0.06; no clear elbow</td><td><span class="v">Scientific finding</span></td></tr>
-        <tr><td>Hierarchical clustering</td><td>Does another algorithm find stable clusters?</td><td>ARI = 0.025 vs k-means</td><td><span class="v">Confirms continuum</span></td></tr>
-        <tr><td>Association rules (Apriori)</td><td>Which symptom combinations predict diagnosis?</td><td>39 rules; confidence 60–84%; lift up to 2.36</td><td><span class="v">Actionable</span></td></tr>
-        <tr><td>Decision tree (depth 5)</td><td>Can we build an interpretable classifier?</td><td>93.8% accuracy; 0.912 F1; 91% sensitivity</td><td><span class="v">Excellent</span></td></tr>
-        <tr><td>Cross-method integration</td><td>Do findings replicate across methods?</td><td>MemoryComplaints &amp; BehavioralProblems both convergent</td><td><span class="v">Validated</span></td></tr>
+        <tr><td>Exploratory analysis</td><td>Which features relate to diagnosis?</td><td>FunctionalAssessment r = −0.36; no single predictor</td><td><span class="v">foundation</span></td></tr>
+        <tr><td>K-means (k=2–7)</td><td>Do discrete subtypes exist?</td><td>Silhouette 0.05–0.06; no elbow</td><td><span class="v">scientific finding</span></td></tr>
+        <tr><td>Hierarchical clustering</td><td>Does another algorithm agree?</td><td>ARI = 0.025 vs k-means</td><td><span class="v">confirms continuum</span></td></tr>
+        <tr><td>Association rules (Apriori)</td><td>Which combinations predict it?</td><td>39 rules; confidence 60–84%; lift ≤ 2.36</td><td><span class="v">actionable</span></td></tr>
+        <tr><td>Decision tree (depth 5)</td><td>Can it be accurate and readable?</td><td>93.8% accuracy; 0.912 F1; 91% sensitivity</td><td><span class="v">excellent</span></td></tr>
+        <tr><td>Cross-method integration</td><td>Do findings replicate?</td><td>MemoryComplaints &amp; BehavioralProblems converge</td><td><span class="v">validated</span></td></tr>
       </tbody>
     </table>
-    <div class="stackline reveal">
-      <span>Python 3.10</span><span>scikit-learn</span><span>mlxtend (Apriori)</span><span>pandas</span><span>NumPy</span><span>matplotlib</span><span>seaborn</span>
+    <div class="stackrow reveal">
+      <div class="sl">stack</div>
+      <div class="si"><span>Python 3.10</span><span>pandas</span><span>NumPy</span><span>scikit-learn</span><span>mlxtend</span><span>matplotlib</span><span>seaborn</span></div>
+    </div>
+    <div class="stackrow reveal">
+      <div class="sl">demonstrates</div>
+      <div class="si"><span>pipeline design</span><span>EDA</span><span>unsupervised + supervised ML</span><span>hyperparameter search</span><span>validation rigor</span><span>interpretability</span><span>scientific framing</span></div>
     </div>
   </section>
 
@@ -400,14 +409,13 @@
 
 <footer>
   <div class="wrap">
-    <p class="credit"><b>Scope &amp; credit:</b> this began as an assigned CIS 635 course project at GVSU (2025); I designed and executed the full pipeline end to end. <b>Dataset:</b> the public <a href="https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset" style="color:var(--flame-d);border-bottom:1px solid var(--flame)">Alzheimer's Disease Dataset</a> (El Kharoua, 2024, Kaggle), 2,149 patients across 35 features.</p>
+    <p class="credit"><b>Scope &amp; data:</b> I designed and executed this analysis end to end. Source: the public <a href="https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset" style="color:var(--flame-d);border-bottom:1px solid var(--flame)">Alzheimer's Disease Dataset</a> (El Kharoua, 2024, Kaggle), 2,149 patients across 35 features.</p>
     <div class="foot-in">
-      <span>Pattern Discovery in Alzheimer's Disease · Cynthia Mutua</span>
-      <span class="el">Transparent models can achieve excellent clinical performance.</span>
+      <span>pattern discovery · alzheimer's disease</span>
       <span class="flinks">
-        <a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">GitHub</a>
-        <a href="https://cece15.github.io/C.-Mutua-Portfolio/">Portfolio</a>
-        <a href="https://www.linkedin.com/in/cynthia-mutua/">LinkedIn</a>
+        <a href="https://github.com/cece15/Pattern-Discovery-in-Alzheimer-s-Disease-A-Knowledge-Discovery-and-Data-Mining-Approach">github</a>
+        <a href="https://cece15.github.io/C.-Mutua-Portfolio/">portfolio</a>
+        <a href="https://www.linkedin.com/in/cynthia-mutua/">linkedin</a>
       </span>
     </div>
   </div>
@@ -416,7 +424,7 @@
 <script>
   (function(){var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver'in window)){els.forEach(e=>e.classList.add('in'));return;}
-    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:"0px 0px -6% 0px"});
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.08,rootMargin:"0px 0px -5% 0px"});
     els.forEach(e=>io.observe(e));})();
 </script>
 </body>
